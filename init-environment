@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# 1)  Check that
+
+# 1)  Install Mongodb Kubernetes Operator
+cd mongo_operator
+echo "Installing/updating Mongodb Operator using kubectl and kustomize"
+./init-environment
+cd ..
+
+echo "Waiting for Mongodb Operator startup...3"
+sleep 5
+echo "Waiting for Mongodb Operator startup...3 2"
+sleep 5
+echo "Waiting for Mongodb Operator startup...3 2 1"
+sleep 5
+echo "Go!"
+
+# 2) Install Ops Manager using the Mongodb Operator
+cd ops_manager
+echo "Installing/updating Ops Manager using kubectl and kustomize"
+./init-environment

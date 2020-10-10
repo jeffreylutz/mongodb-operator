@@ -1,0 +1,4 @@
+# REF: https://docs.mongodb.com/kubernetes-operator/stable/tutorial/install-k8s-operator/#install-k8s-operator
+resources:
+  - crds.yaml
+  - mongodb-enterprise.yaml

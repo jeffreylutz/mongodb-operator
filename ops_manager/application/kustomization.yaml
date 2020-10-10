@@ -1,0 +1,3 @@
+# REF: https://docs.mongodb.com/kubernetes-operator/stable/tutorial/deploy-om-container/
+resources:
+  - ops-manager.yaml

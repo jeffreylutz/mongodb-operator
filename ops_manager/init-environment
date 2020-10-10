@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Install the CustomResourceDefinitions for MOngoDB deployments
+#kubectl replace -f crds.yaml
+
+# Install the Kubernetes Operator using the following:
+#kubectl apply -f mongodb-enterprise.yaml
+
+# Install the customResourceDefinitions and Operator via kustomize
+kubectl apply -k dev
