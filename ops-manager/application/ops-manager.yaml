@@ -13,7 +13,7 @@ spec:
     enabled: false
 
   # the version of Ops Manager distro to use
-  version: 4.4.1
+  version: 4.4.3
 
   # NodePort, LoadBalancer, ExternalName
   externalConnectivity:
@@ -31,7 +31,16 @@ spec:
 
   # optional. The Ops Manager configuration. All the values must be of type string
   configuration:
-    mms.fromEmailAddr: "admin@thecompany.com"
+    mms.ignoreInitialUiSetup: "true"
+    automation.versions.source: mongodb
+    mms.adminEmailAddr: support@example.com
+    mms.fromEmailAddr: support@example.com
+    mms.replyToEmailAddr: support@example.com
+    mms.mail.hostname: email-smtp.us-east-1.amazonaws.com
+    mms.mail.port: "465"
+    mms.mail.ssl: "true"
+    mms.mail.transport: smtp
+    mms.minimumTLSVersion: TLSv1.2
 
   # the application database backing Ops Manager. Replica Set is the only supported type
   # Application database has the SCRAM-SHA authentication mode always enabled
@@ -39,6 +48,7 @@ spec:
     members: 3
     # optional. Configures the version of MongoDB used as an application database.
     # The bundled MongoDB binary will be used if omitted and no download from the Internet will happen
+    # persistent = false FAILS
     version: 4.2.6-ent
     persistent: true
     # optional. Allows to pass custom MongoDB process configuration

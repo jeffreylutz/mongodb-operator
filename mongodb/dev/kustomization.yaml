@@ -1,0 +1,18 @@
+# REF: https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#create-k8s-credentials
+# How to create an API Key
+# REF: https://docs.opsmanager.mongodb.com/rapid/tutorial/manage-programmatic-api-keys/#create-org-app-api-key
+bases:
+  - ../application
+secretGenerator:
+#- name: ops-manager-apikey
+#  namespace: mongodb
+#  env: ops-manager-apikey
+generatorOptions:
+  disableNameSuffixHash: true
+configMapGenerator:
+  - name: ops-manager
+    namespace: mongodb
+    literals:
+    - baseUrl=http://ops-manager-svc.mongodb.svc.cluster.local:8080
+    - projectName=ops-manager-db
+    - orgId=5f87650ffbb11e12baa997b0

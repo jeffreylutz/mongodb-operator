@@ -1,0 +1,10 @@
+#!/bin/bash
+
+env=dev
+file=ops-manager-apikey
+
+# If secret file doesn't exist, decrypt file
+[ ! -f "$env/$file" ] && sops -d $env/secret.$file > $env/$file
+
+# Install the customResourceDefinitions and Operator via kustomize
+kubectl apply -k $env

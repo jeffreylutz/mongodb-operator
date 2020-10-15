@@ -1,9 +1,0 @@
-#!/bin/bash
-
-env=dev
-
-# Confirm that the Password file exists
-[ ! -f "$env/Password" ] && echo "ERROR  $dev/Password file doesn't exist.  Please create it with the admin password contents (eg 'Password123!')" && exit 1
-
-# Install the customResourceDefinitions and Operator via kustomize
-kubectl apply -k $env

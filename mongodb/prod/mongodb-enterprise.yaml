@@ -1,0 +1,14 @@
+# Source: mongodb-enterprise-operator/templates/operator.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-enterprise-operator
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: mongodb-enterprise-operator
+        env:
+        - name: OPERATOR_ENV
+          value: prod

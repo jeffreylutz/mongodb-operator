@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: my-standalone-svc
+  name: the-standalone
+  namespace: mongodb
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-standalone-svc
+      controller: mongodb-enterprise-operator
+      pod-anti-affinity: the-standalone
+  serviceName: my-standalone-svc
+  template:
+    metadata:
+      annotations:
+        certHash: ""
+      labels:
+        app: my-standalone-svc
+        controller: mongodb-enterprise-operator
+        pod-anti-affinity: the-standalone
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  pod-anti-affinity: the-standalone
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+      containers:
+      - command:
+        - /opt/scripts/agent-launcher.sh
+        env:
+        - name: AGENT_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: agentApiKey
+              name: 5f849101e9408c2a969515ed-group-secret
+        - name: AGENT_FLAGS
+          value: -logFile,/var/log/mongodb-mms-automation/automation-agent.log,
+        - name: BASE_URL
+          value: http://ops-manager-svc.mongodb.svc.cluster.local:8080
+        - name: GROUP_ID
+          value: 5f849101e9408c2a969515ed
+        - name: LOG_LEVEL
+        - name: SSL_REQUIRE_VALID_MMS_CERTIFICATES
+          value: "true"
+        - name: USER_LOGIN
+          value: TPUQYRIK
+        image: quay.io/mongodb/mongodb-enterprise-database:2.0.0
+        imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command:
+            - /opt/scripts/probe.sh
+          failureThreshold: 6
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 30
+        name: mongodb-enterprise-database
+        ports:
+        - containerPort: 27017
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - /opt/scripts/readinessprobe
+          failureThreshold: 240
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            cpu: "2"
+            memory: 700m
+          requests:
+            cpu: "1"
+            memory: 500m
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 2000
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/scripts
+          name: database-scripts
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - image: quay.io/mongodb/mongodb-enterprise-init-database:1.0.0
+        imagePullPolicy: IfNotPresent
+        name: mongodb-enterprise-init-database
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/scripts
+          name: database-scripts
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 2000
+      serviceAccount: mongodb-enterprise-database-pods
+      serviceAccountName: mongodb-enterprise-database-pods
+      terminationGracePeriodSeconds: 600
+      volumes:
+      - emptyDir: {}
+        name: database-scripts
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate

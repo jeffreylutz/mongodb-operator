@@ -1,5 +1,0 @@
-commonLabels:
-  app: mongodb-enterprise-operator
-resources:
-- crds.yaml
-#- mongodb-enterprise.yaml

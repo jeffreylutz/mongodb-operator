@@ -1,0 +1,9 @@
+#!/bin/bash
+
+env=dev
+
+# Confirm that the Password file exists
+[ ! -f "$env/Password" ] && [ -f "$env/secret.Password" ] && sops -d $env/secret.Password > $env/Password
+
+# Install the customResourceDefinitions and Operator via kustomize
+kubectl apply -k $env

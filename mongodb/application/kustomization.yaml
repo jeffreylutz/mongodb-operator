@@ -1,0 +1,4 @@
+# REF: https://docs.mongodb.com/kubernetes-operator/stable/reference/k8s-operator-specification/
+resources:
+#  - replica-set.yaml
+  - standalone.yaml
