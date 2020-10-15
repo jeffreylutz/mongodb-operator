@@ -1,6 +1,0 @@
-# REF: https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs
-bases:
-  - ../application
-secretGenerator:
-generatorOptions:
-  disableNameSuffixHash: true
