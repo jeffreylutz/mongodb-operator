@@ -15,4 +15,4 @@ configMapGenerator:
     literals:
     - baseUrl=http://ops-manager-svc.mongodb.svc.cluster.local:8080
     - projectName=ops-manager-db
-    - orgId=5f87650ffbb11e12baa997b0
+    - orgId=5f8996924e2f844c9d06d136
